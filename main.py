@@ -46,5 +46,12 @@ class finder:
             self._working_dir = path
 
     def search(self):
-        pass
+        search_queue = os.listdir(self._working_dir)
+        head = 0
+        while len(search_queue) != 0:       
+            for item in search_queue[head]:
+                filename, file_extention = os.path.splitext(item)
+                if file_extention == ".wav":
+                    self._discovered_items.append(filename + file_extention)
+        return self._discovered_items
 
