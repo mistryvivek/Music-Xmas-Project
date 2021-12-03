@@ -44,14 +44,38 @@ class finder:
             raise TypeError("A valid path must be entered.")
         else:
             self._working_dir = path
+    
+    def full_path(self, search_queue, dir_used):
+        """Convience function provided to add the paths 
+           to filenames.
+
+        Args:
+            search_queue (list): a list of filenames
+            dir_used (string): the directory that needs to be attached.
+
+        Returns:
+            list: updated list which includes the filenames 
+            with the directory.
+        """
+        for counter in range(len(search_queue)):
+            search_queue[counter] = str(dir_used) + "\\" + \
+                                    str(search_queue[counter]) 
+        return search_queue
+                                    
 
     def search(self):
+        #This is need to ensure that all files, have paths 
+        #attached so they can be accessed by anyone.
         search_queue = os.listdir(self._working_dir)
-        head = 0
+        search_queue = self.full_path(search_queue, self._working_dir)
         while len(search_queue) != 0:       
-            for item in search_queue[head]:
+            for item in search_queue:
                 filename, file_extention = os.path.splitext(item)
                 if file_extention == ".wav":
                     self._discovered_items.append(filename + file_extention)
+                search_queue = search_queue[1:]
         return self._discovered_items
 
+
+p = finder()
+print(p.search())
