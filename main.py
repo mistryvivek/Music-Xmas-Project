@@ -1,5 +1,8 @@
 import os
 
+class DirectoryNotFoundError(Exception):
+    pass
+
 #To focus on the control of audio playback.
 class player:
     def __init__(self):
@@ -35,18 +38,20 @@ class finder:
         return self._working_dir
 
     def set_working_dir(self, path):
-        """Changes the directory that will be searched
+        """Changes the directory that will be searched. Checks if it
+        is valid before saving.
 
         Args:
             path (string): Path within the file system.
 
         Raises:
-            TypeError: A blank string would not be a valid path.
+            DirectoryNotFoundError: Raises if the string entered isn't a 
+            valid path.
         """
-        if path == None:
-            raise TypeError("A valid path must be entered.")
-        else:
+        if os.path.isdir(path):
             self._working_dir = path
+        else:
+            raise DirectoryNotFoundError("this path is not valid.")
     
     def full_path(self, items, dir_used):
         """Convience function provided to add the paths 
