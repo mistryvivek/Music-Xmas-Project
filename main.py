@@ -22,6 +22,9 @@ class finder:
         """
         self._working_dir = os.getcwd()
         self._discovered_items = []
+    
+    def __str__(self):
+        return (f"Current working directory is {self._working_dir}.")
 
     def current_dir(self):
         """Tells the user which directory will be searched
@@ -76,6 +79,3 @@ class finder:
                 search_queue = search_queue[1:]
         return self._discovered_items
 
-
-p = finder()
-print(p.search())
