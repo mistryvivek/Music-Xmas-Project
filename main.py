@@ -67,6 +67,11 @@ class finder:
                                     
 
     def search(self):
+        """Starts the directory set and looks for wav files.
+
+        Returns:
+            list: all .wav files found.
+        """
         #This is need to ensure that all files, have paths 
         #attached so they can be accessed by anyone.
         search_queue = os.listdir(self._working_dir)
@@ -77,8 +82,11 @@ class finder:
                 if file_extention == ".wav":
                     self._discovered_items.append(item)
                 elif os.path.isdir(item):
+                    #If it is a folder, it adds everything to the queue while 
+                    #displaying the full directory.
                     new_items_to_add = self.full_path(os.listdir(item), item)   
                     for item in new_items_to_add:
-                        search_queue.append(item)                
+                        search_queue.append(item)       
+                #Removes first item off the list as it has been checked.         
                 search_queue = search_queue[1:]
         return self._discovered_items
