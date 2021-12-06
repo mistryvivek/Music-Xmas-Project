@@ -75,9 +75,10 @@ class finder:
             for item in search_queue:
                 filename, file_extention = os.path.splitext(item)
                 if file_extention == ".wav":
-                    self._discovered_items.append(filename + file_extention)
+                    self._discovered_items.append(item)
                 elif os.path.isdir(item):
-                    new_items_to_add = self._full_path(os.listdir(item), item)                    
+                    new_items_to_add = self.full_path(os.listdir(item), item)   
+                    for item in new_items_to_add:
+                        search_queue.append(item)                
                 search_queue = search_queue[1:]
         return self._discovered_items
-
