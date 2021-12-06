@@ -48,7 +48,7 @@ class finder:
         else:
             self._working_dir = path
     
-    def full_path(self, search_queue, dir_used):
+    def full_path(self, items, dir_used):
         """Convience function provided to add the paths 
            to filenames.
 
@@ -60,10 +60,10 @@ class finder:
             list: updated list which includes the filenames 
             with the directory.
         """
-        for counter in range(len(search_queue)):
-            search_queue[counter] = str(dir_used) + "\\" + \
-                                    str(search_queue[counter]) 
-        return search_queue
+        for counter in range(len(items)):
+            items[counter] = str(dir_used) + "\\" + \
+                                    str(items[counter]) 
+        return items
                                     
 
     def search(self):
@@ -76,6 +76,8 @@ class finder:
                 filename, file_extention = os.path.splitext(item)
                 if file_extention == ".wav":
                     self._discovered_items.append(filename + file_extention)
+                elif os.path.isdir(item):
+                    new_items_to_add = self._full_path(os.listdir(item), item)                    
                 search_queue = search_queue[1:]
         return self._discovered_items
 
