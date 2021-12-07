@@ -22,7 +22,7 @@ class queue:
             index1 = item.rfind("\\")
             index2 = item.rfind(".wav")
             temp_str = temp_str + (item[index1 + 2:index2]) + ","
-        return temp_str
+        return temp_str[:-1]
 
 class DirectoryNotFoundError(Exception):
     pass
@@ -59,7 +59,7 @@ class finder:
             valid path.
         """
         if os.path.isdir(path):
-            self._working_dir = path
+            self._working_dir = path.replace("/","\\")
         else:
             raise DirectoryNotFoundError("this path is not valid.")
     
@@ -79,7 +79,6 @@ class finder:
             items[counter] = str(dir_used) + "\\" + \
                                     str(items[counter]) 
         return items
-                                    
 
     def search(self):
         """Starts the directory set and looks for wav files.
@@ -105,9 +104,5 @@ class finder:
                 #Removes first item off the list as it has been checked.         
                 search_queue = search_queue[1:]
         return queue(self._discovered_items)
-
-p = finder()
-r = p.search()
-print(r)
 
 
