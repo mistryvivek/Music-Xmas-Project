@@ -23,6 +23,16 @@ class queue:
             index2 = item.rfind(".wav")
             temp_str = temp_str + (item[index1 + 2:index2]) + ","
         return temp_str[:-1]
+    
+    def delete(self, location):
+        """Deletes item in a queue.
+
+        Args:
+            location (integer): index of the item that needs to
+            be deleted.
+        """
+        del self._user_queue[location]
+            
 
 class DirectoryNotFoundError(Exception):
     pass
@@ -104,5 +114,4 @@ class finder:
                 #Removes first item off the list as it has been checked.         
                 search_queue = search_queue[1:]
         return queue(self._discovered_items)
-
 
