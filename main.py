@@ -1,21 +1,31 @@
 import os
 
+class queue:
+    def __init__(self, discovered):
+        """Sets the default queue as everything that is discovered.
+
+        Args:
+            discovered (list): All .wav files found, as seen in the
+            finder class.
+        """
+        self._user_queue = discovered
+    
+    def __str__(self):
+        """Overwrite string function.
+
+        Returns:
+            string: shows all the audio files avaliable
+        """
+        temp_str = ""
+        for item in self._user_queue:
+            #Simple list without path and .wav extention.
+            index1 = item.rfind("\\")
+            index2 = item.rfind(".wav")
+            temp_str = temp_str + (item[index1 + 2:index2]) + ","
+        return temp_str
+
 class DirectoryNotFoundError(Exception):
     pass
-
-#To focus on the control of audio playback.
-class player:
-    def __init__(self):
-        pass
-
-    def play(self):
-        pass
-
-    def pause(self):
-        pass
-
-    def stop(self):
-        pass
 
 #To focus on traversing file directories in order to find audio files.
 class finder:
@@ -28,7 +38,7 @@ class finder:
     
     def __str__(self):
         return (f"Current working directory is {self._working_dir}.")
-
+        
     def current_dir(self):
         """Tells the user which directory will be searched
 
@@ -94,4 +104,10 @@ class finder:
                         search_queue.append(item)       
                 #Removes first item off the list as it has been checked.         
                 search_queue = search_queue[1:]
-        return self._discovered_items
+        return queue(self._discovered_items)
+
+p = finder()
+r = p.search()
+print(r)
+
+
