@@ -32,7 +32,28 @@ class queue:
             be deleted.
         """
         del self._user_queue[location]
-            
+    
+    def search(self, keyword):
+        """To search for audio files already in the queue.
+
+        Args:
+            keyword (string): search term
+
+        Returns:
+            string: contains all matching items with the
+            corrosponding index.
+        """
+        string = ""
+        for x in range(len(self._user_queue)):
+            if keyword in self._user_queue[x]:
+                #Find the last one in the path to extract just 
+                #the file name.
+                word = self._user_queue[x][((self._user_queue[x]).rfind("\\") + 1): \
+                                           ((self._user_queue[x]).rfind(".wav"))]
+                #Lists the index of everything with the keyword so they can 
+                #choose what to delete.
+                string = f"{string} \n {x}:{word}"         
+        return string   
 
 class DirectoryNotFoundError(Exception):
     pass
@@ -114,4 +135,3 @@ class finder:
                 #Removes first item off the list as it has been checked.         
                 search_queue = search_queue[1:]
         return queue(self._discovered_items)
-
