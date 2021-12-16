@@ -1,5 +1,11 @@
 import os
 
+class player:
+    def __init__(self, playlist, shuffle, repeat]):
+        pass
+
+
+
 class queue:
     def __init__(self, discovered):
         """Sets the default queue as everything that is discovered.
@@ -54,6 +60,20 @@ class queue:
                 #choose what to delete.
                 string = f"{string} \n {x}:{word}"         
         return string   
+    
+    def load(self, playlist, shuffle=False, repeat=[]):
+        """To load the playlist into the player class.
+
+        Args:
+            playlist (list): a list of all audio files
+            shuffle (bool, optional): play in the order specified or not. Defaults to False.
+            repeat (list, optional): specifies what songs need to be repeated. Defaults to empty list.
+
+        Returns:
+            player: this gets the audio files ready to play within python.
+        """
+        return player(self._user_queue, shuffle, repeat)
+        
 
 class DirectoryNotFoundError(Exception):
     pass
