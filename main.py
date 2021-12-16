@@ -1,8 +1,38 @@
 import os
+from typing import Type
+
+class EmptyPlaylistError(Exception):
+    pass
 
 class player:
-    def __init__(self, playlist, shuffle, repeat]):
-        pass
+    def __init__(self, playlist, shuffle, repeat):
+        #Verification of the playlist entered as a parameter.
+        #Need to contain something to prevent playback errors
+        #which could be caused by this.
+        if isinstance(playlist, list) == False:
+            raise TypeError("Playlist must be a list.")
+        elif playlist == []:
+            raise EmptyPlaylistError("Playlist can not be empty.")
+        else:
+            self._playlist = playlist
+        #Shuffle can only be a boolean value so we know whether 
+        #to do it or not.
+        if isinstance(shuffle, bool) == False:
+            raise TypeError("Shuffle parameter can only contain \
+                  a True or False value.")
+        #Repeat must be a list as user is going to pick which
+        #audio files to playback according to the index of the 
+        #list.
+        if isinstance(repeat, list) == False:
+            raise TypeError("This must be a list.")
+        #Length must be same as queue so the indexs match up.
+        elif not len(repeat) == len(playlist):
+            raise IndexError("Each index in the repeat parameter list \
+                  must correspond to an item in a list.")
+        elif repeat == []:
+            self._repeat = [None for x in range(len(playlist))]
+        else:
+            self._repeat = repeat
 
 
 
