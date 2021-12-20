@@ -50,6 +50,11 @@ class player:
             self._repeat = [None for x in range(len(playlist))]
         else:
             self._repeat = repeat
+        #Keep track of track we are on.
+        #Don't want to delete items from list so we can implement 
+        #forwards/backwards.
+        self._current = 0
+        
 
 
 
