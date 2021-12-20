@@ -1,9 +1,11 @@
 import os
 from typing import Type
+from kivy.sound.core import SoundLoader
 
 class EmptyPlaylistError(Exception):
     pass
 
+#To focus on audio playback.
 class player:
     def __init__(self, playlist, shuffle, repeat):
         """Sets up music ready for playback.
@@ -54,10 +56,14 @@ class player:
         #Don't want to delete items from list so we can implement 
         #forwards/backwards.
         self._current = 0
-        
 
-
-
+    def play(self):
+        sound = SoundLoader.load(self._playlist[self._current])
+        if sound:
+            sound.play()
+    
+    
+#To focus on selecting items before implementing the player.
 class queue:
     def __init__(self, discovered):
         """Sets the default queue as everything that is discovered.
@@ -113,11 +119,10 @@ class queue:
                 string = f"{string} \n {x}:{word}"         
         return string   
     
-    def load(self, playlist, shuffle=False, repeat=[]):
+    def load(self, shuffle=False, repeat=[]):
         """To load the playlist into the player class.
 
         Args:
-            playlist (list): a list of all audio files
             shuffle (bool, optional): play in the order specified or not. Defaults to False.
             repeat (list, optional): specifies what songs need to be repeated. Defaults to empty list.
 
@@ -207,3 +212,7 @@ class finder:
                 #Removes first item off the list as it has been checked.         
                 search_queue = search_queue[1:]
         return queue(self._discovered_items)
+
+f = finder()
+q = f.search()
+p = q.load()
