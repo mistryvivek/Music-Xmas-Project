@@ -6,6 +6,23 @@ class EmptyPlaylistError(Exception):
 
 class player:
     def __init__(self, playlist, shuffle, repeat):
+        """Sets up music ready for playback.
+
+        Args:
+            playlist (list): contains the tracks that will be played.
+            shuffle (boolean): whether shuffle has been enabled.
+            repeat (list): each index corrosponds to whether each song
+               needs to be repeated.
+
+        Raises:
+            TypeError: Playlist has to be a list.
+            EmptyPlaylistError: Playlist must contain at least one 
+               object.
+            TypeError: Shuffle must have a boolean value.
+            TypeError: Repeat must be a list.
+            IndexError: Each index in repeat must corrospond to a 
+               index in the playlist.
+        """
         #Verification of the playlist entered as a parameter.
         #Need to contain something to prevent playback errors
         #which could be caused by this.
