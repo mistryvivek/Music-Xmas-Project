@@ -1,6 +1,8 @@
 import os
 from typing import Type
-from kivy.sound.core import SoundLoader
+#Install v1.2.2 due to bug on other version.
+#This has been tested on this library and works.
+from playsound import playsound
 
 class EmptyPlaylistError(Exception):
     pass
@@ -44,24 +46,22 @@ class player:
         #list.
         if isinstance(repeat, list) == False:
             raise TypeError("This must be a list.")
+        elif repeat == []:
+            self._repeat = [None for x in range(len(playlist))]        
         #Length must be same as queue so the indexs match up.
         elif not len(repeat) == len(playlist):
             raise IndexError("Each index in the repeat parameter list \
                   must correspond to an item in a list.")
-        elif repeat == []:
-            self._repeat = [None for x in range(len(playlist))]
         else:
             self._repeat = repeat
         #Keep track of track we are on.
         #Don't want to delete items from list so we can implement 
         #forwards/backwards.
-        self._current = 0
-
-    def play(self):
-        sound = SoundLoader.load(self._playlist[self._current])
-        if sound:
-            sound.play()
+        self._current = 0   
     
+    def play(self):
+        playsound(str(self._playlist[self._current]))
+        
     
 #To focus on selecting items before implementing the player.
 class queue:
@@ -216,3 +216,4 @@ class finder:
 f = finder()
 q = f.search()
 p = q.load()
+p.play()
