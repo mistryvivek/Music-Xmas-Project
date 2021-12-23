@@ -3,6 +3,7 @@ from typing import Type
 #Install v1.2.2 due to bug on other version.
 #This has been tested on this library and works.
 from playsound import playsound
+import random
 
 class EmptyPlaylistError(Exception):
     pass
@@ -36,13 +37,6 @@ class player:
             raise EmptyPlaylistError("Playlist can not be empty.")
         else:
             self._playlist = playlist
-        #Shuffle can only be a boolean value so we know whether 
-        #to do it or not.
-        if isinstance(shuffle, bool) == False:
-            raise TypeError("Shuffle parameter can only contain \
-                  a True or False value.")
-        else:
-            self._shuffle = shuffle
         #Repeat must be a list as user is going to pick which
         #audio files to playback according to the index of the 
         #list.
@@ -60,27 +54,52 @@ class player:
         #Don't want to delete items from list so we can implement 
         #forwards/backwards.
         self._current = 0   
+        #Shuffle can only be a boolean value so we know whether 
+        #to do it or not.
+        if isinstance(shuffle, bool) == False:
+            raise TypeError("Shuffle parameter can only contain \
+                  a True or False value.")
+        else:
+            self._shuffle = shuffle
     
+    #Convience function for checking if item needs to
+    #be repeated.
     def repeat_checker(self):
         playsound(str(self._playlist[self._current]))
+        #If the repeat tracker is at 0 , you can 
+        #move on to the next track.
         if self._repeat_tracker[self._current] == 0:
             return False
         else:
             self._repeat_tracker[self._current] -= 1
 
-    def play(self):
-        print(self._playlist)
+    def shuffle_setup(self):
+        #Convience function.
+        #Using a dico to store repeat index as the playlist will 
+        #become reordered.
+        repeat_dico = {}
+        for x in range(len(self._playlist)):
+            repeat_dico[self._playlist[x]] = self._repeat[x]
+        random.shuffle(self._playlist)
+        #Remakes the repeat list in the correct order as each
+        #path is a unique key in the dictonary.
+        self._repeat = []
+        for item in self._playlist:
+            self._repeat.append(repeat_dico[item])
+
+    def play(self):  
+        """Plays the tracks in based upon the queue and user
+        selection.
+        """
+        if self._shuffle == True:
+            self.shuffle_setup() 
+        print(self._playlist, self._repeat)                             
         #Use this to keep track of repeats 
         #without effecting the other list.
         self._repeat_tracker = self._repeat.copy()
-        if self._shuffle == True:
-            while True:
-                if self.repeat_checker() == False:
-                    self._current += 1 % len(self._playlist)
-        else:
-            while self._current < len(self._playlist):
-                if self.repeat_checker() == False:
-                    self._current += 1
+        while self._current < len(self._playlist):
+            if self.repeat_checker() == False:
+                self._current += 1
 
 #To focus on selecting items before implementing the player.
 class queue:
@@ -232,7 +251,7 @@ class finder:
                 search_queue = search_queue[1:]
         return queue(self._discovered_items)
 
-f = finder()
+"""f = finder()
 q = f.search()
-p = q.load(repeat=[1,0,0])
-p.play()
+p = q.load(shuffle = True, repeat=[1,0,0])
+p.play()"""
