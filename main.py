@@ -62,6 +62,14 @@ class player:
         else:
             self._shuffle = shuffle
     
+    def __str__(self):
+        """Tells user the position in the queue.
+
+        Returns:
+            string: message displaying the index in the queue.
+        """
+        return (f"Current position in queue is: {self._current}")
+
     #Convience function for checking if item needs to
     #be repeated.
     def repeat_checker(self):
@@ -86,6 +94,8 @@ class player:
         self._repeat = []
         for item in self._playlist:
             self._repeat.append(repeat_dico[item])
+        #Avoids this function from being repeated again.
+        self._shuffle = False
 
     def play(self):  
         """Plays the tracks in based upon the queue and user
@@ -100,6 +110,21 @@ class player:
         while self._current < len(self._playlist):
             if self.repeat_checker() == False:
                 self._current += 1
+    
+    def forward(self, spaces=1):
+        """Skips tracks in the queue.
+
+        Args:
+            spaces (int, optional): User can specify how many positions 
+            in the queue to skip. Defaults to 1.
+        """
+        if isinstance(spaces, int):
+            raise(ValueError, "Parameter must be a whole number")
+        else:
+            self._current += spaces % len(self._current)
+            self.play()
+
+
 
 #To focus on selecting items before implementing the player.
 class queue:
