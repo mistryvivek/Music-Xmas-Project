@@ -41,13 +41,15 @@ class player:
         if isinstance(shuffle, bool) == False:
             raise TypeError("Shuffle parameter can only contain \
                   a True or False value.")
+        else:
+            self._shuffle = shuffle
         #Repeat must be a list as user is going to pick which
         #audio files to playback according to the index of the 
         #list.
         if isinstance(repeat, list) == False:
             raise TypeError("This must be a list.")
         elif repeat == []:
-            self._repeat = [None for x in range(len(playlist))]        
+            self._repeat = [0 for x in range(len(playlist))]        
         #Length must be same as queue so the indexs match up.
         elif not len(repeat) == len(playlist):
             raise IndexError("Each index in the repeat parameter list \
@@ -60,9 +62,16 @@ class player:
         self._current = 0   
     
     def play(self):
-        playsound(str(self._playlist[self._current]))
-        
-    
+        print(self._playlist)
+        if self._shuffle == True:
+            while True:
+                playsound(str(self._playlist[self._current]))
+                self._current += 1 % len(self._playlist)
+        else:
+            while self._current < len(self._playlist):
+                playsound(str(self._playlist[self._current]))
+                self._current += 1
+
 #To focus on selecting items before implementing the player.
 class queue:
     def __init__(self, discovered):
