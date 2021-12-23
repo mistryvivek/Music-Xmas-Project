@@ -125,7 +125,7 @@ class player:
             self._current += spaces % len(self._current)
             self.play()
 
-    def skip(self, spaces=1):
+    def backwards(self, spaces=1):
         """Skips tracks in the queue. (negative direction)
 
         Args:
