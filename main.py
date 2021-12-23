@@ -61,16 +61,26 @@ class player:
         #forwards/backwards.
         self._current = 0   
     
+    def repeat_checker(self):
+        playsound(str(self._playlist[self._current]))
+        if self._repeat_tracker[self._current] == 0:
+            return False
+        else:
+            self._repeat_tracker[self._current] -= 1
+
     def play(self):
         print(self._playlist)
+        #Use this to keep track of repeats 
+        #without effecting the other list.
+        self._repeat_tracker = self._repeat.copy()
         if self._shuffle == True:
             while True:
-                playsound(str(self._playlist[self._current]))
-                self._current += 1 % len(self._playlist)
+                if self.repeat_checker() == False:
+                    self._current += 1 % len(self._playlist)
         else:
             while self._current < len(self._playlist):
-                playsound(str(self._playlist[self._current]))
-                self._current += 1
+                if self.repeat_checker() == False:
+                    self._current += 1
 
 #To focus on selecting items before implementing the player.
 class queue:
@@ -224,5 +234,5 @@ class finder:
 
 f = finder()
 q = f.search()
-p = q.load()
+p = q.load(repeat=[1,0,0])
 p.play()
