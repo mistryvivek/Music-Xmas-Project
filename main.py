@@ -102,8 +102,7 @@ class player:
         selection.
         """
         if self._shuffle == True:
-            self.shuffle_setup() 
-        print(self._playlist, self._repeat)                             
+            self.shuffle_setup()                             
         #Use this to keep track of repeats 
         #without effecting the other list.
         self._repeat_tracker = self._repeat.copy()
@@ -112,18 +111,34 @@ class player:
                 self._current += 1
     
     def forward(self, spaces=1):
-        """Skips tracks in the queue.
+        """Skips tracks in the queue. (positive direction)
 
         Args:
             spaces (int, optional): User can specify how many positions 
             in the queue to skip. Defaults to 1.
         """
         if isinstance(spaces, int):
-            raise(ValueError, "Parameter must be a whole number")
+            raise(TypeError, "Parameter must be a whole number")
+        elif spaces < 0:
+            raise(ValueError, "Parameter must be 1 or more")
         else:
             self._current += spaces % len(self._current)
             self.play()
 
+    def skip(self, spaces=1):
+        """Skips tracks in the queue. (negative direction)
+
+        Args:
+            spaces (int, optional): User can specify how many positions 
+            in the queue to skip. Defaults to 1.
+        """
+        if isinstance(spaces, int):
+            raise(TypeError, "Parameter must be a whole number")
+        elif spaces < 0:
+            raise(ValueError, "Parameter must be 1 or more")
+        else:
+            self._current -= spaces % len(self._current)
+            self.play()
 
 
 #To focus on selecting items before implementing the player.
@@ -276,7 +291,7 @@ class finder:
                 search_queue = search_queue[1:]
         return queue(self._discovered_items)
 
-"""f = finder()
+f = finder()
 q = f.search()
 p = q.load(shuffle = True, repeat=[1,0,0])
-p.play()"""
+p.play()
